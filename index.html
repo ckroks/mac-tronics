@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Mac-Tronics | Uw Robotica Specialist</title>
+    <style>
+        :root {
+            --primary: #00d4ff;
+            --dark: #121212;
+            --card-bg: #1e1e1e;
+            --text: #ffffff;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: var(--text); margin: 0; display: flex; min-height: 100vh; }
+        
+        /* Sidebar */
+        .sidebar { width: 300px; background: var(--card-bg); height: 100vh; position: sticky; top: 0; padding: 20px; border-right: 2px solid var(--primary); display: flex; flex-direction: column; box-sizing: border-box; }
+        
+        /* Main Content */
+        .main { flex: 1; padding: 40px; box-sizing: border-box; }
+        header { text-align: center; margin-bottom: 40px; }
+        h1 { font-size: 3em; color: var(--primary); text-shadow: 0 0 10px var(--primary); margin: 0; text-transform: uppercase; }
+
+        /* Zoekbalk & Filters */
+        .controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+        #searchBar { padding: 12px 20px; border-radius: 25px; border: 1px solid var(--primary); background: #222; color: white; width: 300px; outline: none; }
+        .filter-btn { padding: 10px 20px; border-radius: 20px; border: 1px solid var(--primary); background: transparent; color: var(--primary); cursor: pointer; transition: 0.3s; }
+        .filter-btn.active, .filter-btn:hover { background: var(--primary); color: var(--dark); font-weight: bold; }
+
+        /* Shop Grid */
+        .shop { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; }
+        .card { background: var(--card-bg); border-radius: 15px; padding: 20px; text-align: center; border: 1px solid #333; transition: 0.3s; display: flex; flex-direction: column; }
+        .card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .card img { width: 100%; height: 140px; object-fit: cover; margin-bottom: 15px; border-radius: 10px; border: 1px solid #333; }
+        .price { color: var(--primary); font-size: 1.3em; font-weight: bold; margin: 10px 0; }
+        
+        .buy-btn { background: var(--primary); color: var(--dark); border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; }
+        
+        /* Mandje */
+        #cart-list { flex-grow: 1; overflow-y: auto; margin-top: 20px; }
+        .cart-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #333; font-size: 0.9em; }
+        .total-box { padding-top: 20px; border-top: 2px solid var(--primary); }
+    </style>
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>🛒 Mandje</h2>
+    <div id="cart-list">
+        <p id="empty-msg">Je mandje is leeg...</p>
+    </div>
+    <div class="total-box">
+        <h3>Totaal: <span id="total-price">€0.00</span></h3>
+        <button class="buy-btn" onclick="checkout()" style="background: #00ff88;">AFREKENEN</button>
+    </div>
+</div>
+
+<div class="main">
+    <header>
+        <h1>MAC-TRONICS</h1>
+        <p style="color: #888;">Uw Specialist in Chips & Sensoren</p>
+    </header>
+
+    <div class="controls">
+        <input type="text" id="searchBar" placeholder="Zoek een onderdeel..." onkeyup="search()">
+        <button class="filter-btn active" onclick="filterCat('all', this)">Alles</button>
+        <button class="filter-btn" onclick="filterCat('chip', this)">Chips</button>
+        <button class="filter-btn" onclick="filterCat('sensor', this)">Sensoren</button>
+        <button class="filter-btn" onclick="filterCat('motor', this)">Motoren</button>
+    </div>
+
+    <div class="shop" id="product-grid">
+        <!-- CHIPS -->
+        <div class="card chip">
+            <img src="https://placehold.co">
+            <h3>Arduino Uno R3</h3>
+            <p class="price">€24.95</p>
+            <button class="buy-btn" onclick="addToCart('Arduino Uno', 24.95)">Bestel</button>
+        </div>
+        <div class="card chip">
+            <img src="https://placehold.co">
+            <h3>ESP32 WiFi + BT</h3>
+            <p class="price">€8.95</p>
+            <button class="buy-btn" onclick="addToCart('ESP32 WiFi', 8.95)">Bestel</button>
+        </div>
+
+        <!-- SENSOREN -->
+        <div class="card sensor">
+            <img src="https://placehold.co">
+            <h3>HC-SR04 Sensor</h3>
+            <p class="price">€3.25</p>
+            <button class="buy-btn" onclick="addToCart('HC-SR04', 3.25)">Bestel</button>
+        </div>
+        <div class="card sensor">
+            <img src="https://placehold.co">
+            <h3>Lichtsensor (LDR)</h3>
+            <p class="price">€0.95</p>
+            <button class="buy-btn" onclick="addToCart('Lichtsensor', 0.95)">Bestel</button>
+        </div>
+
+        <!-- MOTOREN -->
+        <div class="card motor">
+            <img src="https://placehold.co">
+            <h3>SG90 Micro Servo</h3>
+            <p class="price">€4.50</p>
+            <button class="buy-btn" onclick="addToCart('SG90 Servo', 4.50)">Bestel</button>
+        </div>
+        <div class="card motor">
+            <img src="https://placehold.co">
+            <h3>DC Motor 3-6V</h3>
+            <p class="price">€2.50</p>
+            <button class="buy-btn" onclick="addToCart('DC Motor', 2.50)">Bestel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let total = 0;
+
+    function addToCart(name, price) {
+        document.getElementById('empty-msg').style.display = 'none';
+        const list = document.getElementById('cart-list');
+        const item = document.createElement('div');
+        item.className = 'cart-item';
+        item.innerHTML = `<span>${name}</span><span>€${price.toFixed(2)}</span>`;
+        list.appendChild(item);
+        total += price;
+        document.getElementById('total-price').innerText = '€' + total.toFixed(2);
+    }
+
+    function filterCat(category, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.card').forEach(card => {
+            card.style.display = (category === 'all' || card.classList.contains(category)) ? 'flex' : 'none';
+        });
+    }
+
+    function search() {
+        let input = document.getElementById('searchBar').value.toLowerCase();
+        document.querySelectorAll('.card').forEach(card => {
+            let title = card.querySelector('h3').innerText.toLowerCase();
+            card.style.display = title.includes(input) ? 'flex' : 'none';
+        });
+    }
+
+    function checkout() {
+        if(total > 0) alert("Mac-Tronics bedankt u! Totaal: €" + total.toFixed(2));
+        else alert("Mandje is leeg!");
+    }
+</script>
+
+</body>
+</html>
