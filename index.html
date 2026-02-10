@@ -3,134 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mac-Tronics | Uw Chip-Specialist Strandvliet</title>
+    <title>Mac-Tronics | Specialist Strandvliet</title>
     <style>
-        :root {
-            --neon: #00d4ff;
-            --bg: #0a0a0c;
-            --card: #161b22;
-        }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); color: #fff; margin: 0; display: flex; min-height: 100vh; }
+        :root { --neon: #00d4ff; --bg: #0d1117; --card: #161b22; --accent: #ff0055; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #fff; margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
         
-        /* Sidebar / Mandje */
-        .sidebar { width: 320px; background: var(--card); padding: 25px; border-right: 2px solid var(--neon); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; box-sizing: border-box; }
-        .sidebar h2 { color: var(--neon); text-transform: uppercase; letter-spacing: 2px; }
-
-        /* Main */
+        /* Layout */
+        .wrapper { display: flex; flex: 1; }
+        .sidebar { width: 300px; background: var(--card); padding: 20px; border-right: 2px solid var(--neon); position: sticky; top: 0; height: 100vh; box-sizing: border-box; }
         .main { flex: 1; padding: 40px; }
-        header { text-align: center; margin-bottom: 50px; border-bottom: 1px solid #333; padding-bottom: 20px; }
-        h1 { font-size: 3.5rem; color: var(--neon); text-shadow: 0 0 20px var(--neon); margin: 0; }
-        .strandvliet-badge { background: #ff0055; color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
 
-        /* Zoeken & Filters */
-        .controls { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; }
-        #search { padding: 12px 25px; border-radius: 30px; border: 1px solid var(--neon); background: #000; color: white; width: 350px; outline: none; box-shadow: 0 0 10px rgba(0,212,255,0.2); }
-        .f-btn { padding: 10px 20px; border-radius: 20px; border: 1px solid var(--neon); background: transparent; color: var(--neon); cursor: pointer; transition: 0.3s; }
-        .f-btn.active, .f-btn:hover { background: var(--neon); color: #000; font-weight: bold; box-shadow: 0 0 15px var(--neon); }
+        /* Header */
+        h1 { font-size: 3.5rem; color: var(--neon); cursor: pointer; text-shadow: 0 0 15px var(--neon); margin: 0; text-align: center; }
+        .badge { background: var(--accent); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; vertical-align: middle; }
 
         /* Producten */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 30px; }
-        .card { background: var(--card); border-radius: 20px; padding: 20px; text-align: center; border: 1px solid #30363d; transition: 0.3s; position: relative; overflow: hidden; }
-        .card:hover { transform: translateY(-10px); border-color: var(--neon); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .card img { width: 100%; height: 160px; object-fit: contain; margin-bottom: 15px; border-radius: 10px; background: #0d1117; }
-        .price { color: var(--neon); font-size: 1.5rem; font-weight: 800; margin: 15px 0; }
-        
-        .buy-btn { background: var(--neon); color: #000; border: none; padding: 12px; border-radius: 12px; cursor: pointer; width: 100%; font-weight: bold; font-size: 1rem; }
-        .buy-btn:hover { background: #fff; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 25px; margin-top: 30px; }
+        .card { background: var(--card); border-radius: 15px; padding: 15px; text-align: center; border: 1px solid #30363d; transition: 0.3s; }
+        .card:hover { transform: translateY(-5px); border-color: var(--neon); }
+        .card img { width: 100%; height: 150px; object-fit: contain; border-radius: 10px; background: #fff; padding: 5px; box-sizing: border-box; }
+        .price { color: var(--neon); font-size: 1.4rem; font-weight: bold; margin: 10px 0; }
 
-        /* Cart Items */
-        #cart-items { flex-grow: 1; overflow-y: auto; margin-top: 20px; }
-        .cart-item { background: rgba(255,255,255,0.05); padding: 10px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; font-size: 0.9rem; border-left: 3px solid var(--neon); }
-        .checkout-btn { background: #00ff88; color: #000; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: 900; cursor: pointer; margin-top: 20px; font-size: 1.1rem; }
+        /* Admin & Cart */
+        #admin-panel { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: #000; border: 2px solid gold; padding: 30px; z-index: 1000; border-radius: 20px; text-align: center; }
+        .btn-buy { background: var(--neon); border: none; padding: 10px; border-radius: 8px; width: 100%; cursor: pointer; font-weight: bold; }
+        .btn-checkout { background: #00ff88; border: none; padding: 15px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 20px; }
+        .cart-item { background: rgba(255,255,255,0.05); padding: 8px; margin-bottom: 5px; border-radius: 5px; font-size: 0.9rem; display: flex; justify-content: space-between; }
     </style>
 </head>
 <body>
 
-<div class="sidebar">
-    <h2>🛒 Uw Mandje</h2>
-    <div id="cart-items">
-        <p style="color: #888; text-align: center;">Geen items geselecteerd</p>
-    </div>
-    <div style="border-top: 1px solid #444; padding-top: 20px;">
-        <div style="display:flex; justify-content:space-between; font-size:1.3rem;">
-            <span>Totaal:</span>
-            <span id="total-price" style="color:var(--neon); font-weight:bold;">€0.00</span>
-        </div>
-        <p style="font-size: 0.7rem; color: #aaa; margin-top: 10px;">* Afhalen bij Strandvliet mogelijk</p>
-        <button class="checkout-btn" onclick="checkout()">BESTELLING AFRONDEN</button>
-    </div>
+<div id="admin-panel">
+    <h2 style="color:gold;">🛠 Mac-Tronics Admin Paneel</h2>
+    <p>Aantal keer dat jij deze shop opende: <b id="visit-count">0</b></p>
+    <p>Geschatte winst uit mandje: <b id="profit-calc">€0.00</b></p>
+    <button onclick="toggleAdmin()" style="cursor:pointer;">Sluiten</button>
 </div>
 
-<div class="main">
-    <header>
-        <h1>MAC-TRONICS</h1>
-        <p>Premium Robotics & Components <span class="strandvliet-badge">LOCATIE: STRANDVLIET</span></p>
-    </header>
-
-    <div class="controls">
-        <input type="text" id="search" placeholder="Zoek een chip of sensor..." onkeyup="search()">
-        <button class="f-btn active" onclick="filter('all', this)">Alles</button>
-        <button class="f-btn" onclick="filter('chip', this)">Chips</button>
-        <button class="f-btn" onclick="filter('sens', this)">Sensoren</button>
+<div class="wrapper">
+    <div class="sidebar">
+        <h2>🛒 Winkelmand</h2>
+        <div id="cart-list"><p style="color:#666;">Je mandje is leeg</p></div>
+        <hr style="border: 0.5px solid #333;">
+        <h3>Totaal: <span id="total-price">€0.00</span></h3>
+        <button class="btn-checkout" onclick="checkout()">AFREKENEN</button>
+        <p style="font-size: 0.8rem; color: #888; margin-top: 15px;">📍 Gratis afhalen bij Strandvliet</p>
     </div>
 
-    <div class="grid">
-        <div class="card chip">
-            <img src="https://placehold.co">
-            <h3>Arduino Uno R3</h3>
-            <p class="price">€24.95</p>
-            <button class="buy-btn" onclick="add('Arduino Uno', 24.95)">Bestel Nu</button>
-        </div>
-        <div class="card chip">
-            <img src="https://placehold.co">
-            <h3>ESP32 WiFi Board</h3>
-            <p class="price">€8.95</p>
-            <button class="buy-btn" onclick="add('ESP32 WiFi', 8.95)">Bestel Nu</button>
-        </div>
-        <div class="card sens">
-            <img src="https://placehold.co">
-            <h3>HC-SR04 Sensor</h3>
-            <p class="price">€3.25</p>
-            <button class="buy-btn" onclick="add('HC-SR04 Sensor', 3.25)">Bestel Nu</button>
-        </div>
-        <div class="card sens">
-            <img src="https://placehold.co">
-            <h3>LDR Lichtsensor</h3>
-            <p class="price">€0.95</p>
-            <button class="buy-btn" onclick="add('LDR Lichtsensor', 0.95)">Bestel Nu</button>
+    <div class="main">
+        <h1 onclick="toggleAdmin()">MAC-TRONICS <span class="badge">PRO</span></h1>
+        <p style="text-align: center; color: #888;">Klik op de naam voor Admin Mode</p>
+
+        <div class="grid">
+            <!-- Arduino Uno -->
+            <div class="card">
+                <img src="https://upload.wikimedia.org" alt="Arduino">
+                <h3>Arduino Uno R3</h3>
+                <p class="price">€24.95</p>
+                <button class="btn-buy" onclick="add('Arduino Uno', 24.95, 17.45)">In Mandje</button>
+            </div>
+
+            <!-- ESP32 -->
+            <div class="card">
+                <img src="https://m.media-amazon.com" alt="ESP32">
+                <h3>ESP32 WiFi Board</h3>
+                <p class="price">€8.95</p>
+                <button class="btn-buy" onclick="add('ESP32 WiFi', 8.95, 3.45)">In Mandje</button>
+            </div>
+
+            <!-- Sensor -->
+            <div class="card">
+                <img src="https://upload.wikimedia.org" alt="Sensor">
+                <h3>HC-SR04 Sensor</h3>
+                <p class="price">€3.25</p>
+                <button class="btn-buy" onclick="add('HC-SR04', 3.25, 1.50)">In Mandje</button>
+            </div>
         </div>
     </div>
 </div>
 
 <script>
     let total = 0;
-    function add(name, price) {
-        const list = document.getElementById('cart-items');
+    let profit = 0;
+
+    // Bezoekersteller voor jezelf (Local Storage)
+    let visitCount = localStorage.getItem('macTronicsVisits') || 0;
+    visitCount++;
+    localStorage.setItem('macTronicsVisits', visitCount);
+    document.getElementById('visit-count').innerText = visitCount;
+
+    function add(name, price, itemProfit) {
+        const list = document.getElementById('cart-list');
         if (total === 0) list.innerHTML = '';
-        const item = document.createElement('div');
-        item.className = 'cart-item';
-        item.innerHTML = `<span>${name}</span> <b>€${price.toFixed(2)}</b>`;
-        list.appendChild(item);
+        
+        list.innerHTML += `<div class="cart-item"><span>${name}</span><b>€${price.toFixed(2)}</b></div>`;
         total += price;
+        profit += itemProfit;
+        
         document.getElementById('total-price').innerText = '€' + total.toFixed(2);
+        document.getElementById('profit-calc').innerText = '€' + profit.toFixed(2);
     }
-    function filter(c, b) {
-        document.querySelectorAll('.f-btn').forEach(x => x.classList.remove('active'));
-        b.classList.add('active');
-        document.querySelectorAll('.card').forEach(card => {
-            card.style.display = (c === 'all' || card.classList.contains(c)) ? 'block' : 'none';
-        });
+
+    function toggleAdmin() {
+        const panel = document.getElementById('admin-panel');
+        panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
     }
-    function search() {
-        let q = document.getElementById('search').value.toLowerCase();
-        document.querySelectorAll('.card').forEach(card => {
-            card.style.display = card.innerText.toLowerCase().includes(q) ? 'block' : 'none';
-        });
-    }
+
     function checkout() {
-        if(total > 0) alert("Mac-Tronics Order Ontvangen!\nLocatie: Strandvliet Afhaalpunt\nTotaal: €" + total.toFixed(2));
-        else alert("Je mandje is nog leeg!");
+        if(total > 0) {
+            alert("🚀 Mac-Tronics order bevestigd!\nTotaal: €" + total.toFixed(2) + "\nWe zien je snel bij Strandvliet!");
+        } else {
+            alert("Je mandje is nog leeg!");
+        }
     }
 </script>
+
 </body>
 </html>
